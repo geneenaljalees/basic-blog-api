@@ -59,3 +59,32 @@ test('should create a new post for an existing user', (done) => {
         done();
       });
   });
+
+    test('should return all posts for a specific id as JSON', (done) => {
+      request(app)
+        .get('/posts/user/1')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body[0].title).toBe('My First Post');
+          expect(res.body[0].content).toBe('Hello world!');
+          expect(res.body[0].userId).toBe(1);
+          expect(res.body.length).toBe(1);
+
+          done();
+        });
+    });
+
+      test('should return 404 if user has no posts', (done) => {
+        request(app)
+          .get('/posts/user/99')
+          .expect(404)
+          .expect('Content-Type', /json/)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            expect(res.body.message).toBe('No posts found for this user');
+            done();
+          });
+      });

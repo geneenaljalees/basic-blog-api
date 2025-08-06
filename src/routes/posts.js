@@ -22,4 +22,15 @@ router.get('/', (req, res) => {
   res.json(posts);
 });
 
+router.get('/user/:userId', (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const userPosts = posts.filter((p) => p.userId === userId);
+
+  if (userPosts.length === 0) {
+    return res.status(404).json({ message: 'No posts found for this user' });
+  }
+
+  res.json(userPosts);
+});
+
 module.exports = router;
