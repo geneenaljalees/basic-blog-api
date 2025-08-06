@@ -23,3 +23,25 @@ const app = require('./server');
        done();
      });
  });
+
+test('should create a new post for an existing user', (done) => {
+  const newPost = {
+    userId: 1,
+    title: 'My First Post',
+    content: 'Hello world!'
+  };
+
+  request(app)
+    .post('/posts')
+    .send(newPost)
+    .set('Content-Type', 'application/json')
+    .expect(201)
+    .end((err, res) => {
+      if (err) return done(err);
+
+      expect(res.body).toHaveProperty('message', 'Post created successfully');
+      expect(res.body.post.title).toBe('My First Post');
+      expect(res.body.post.content).toBe('Hello world!');
+      done();
+    })
+});
