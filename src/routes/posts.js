@@ -18,5 +18,8 @@ router.post('/', (req, res) => {
   res.status(201).json({ message: 'Post created successfully', post: newPost });
 });
 
+router.get('/', (req, res) => {
+  res.json(posts);
+});
 
 module.exports = router;
