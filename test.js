@@ -45,3 +45,17 @@ test('should create a new post for an existing user', (done) => {
       done();
     })
 });
+
+  test('should return all posts as JSON', (done) => {
+    request(app)
+      .get('/posts')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body[0].title).toBe('My First Post');
+        expect(res.body[0].content).toBe('Hello world!');
+        expect(res.body[0].userId).toBe(1);
+        done();
+      });
+  });
